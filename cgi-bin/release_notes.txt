@@ -1,0 +1,38 @@
+
+release 1.1.2  Nov 25 2014 ==================================================
+
+ Minor corrections
+
+ Changing Web interface according to updates in release 1.1.0 and 1.1.1.
+ Changing result page to be able to show overlap between primer and internal probe
+
+release 1.1.1  Nov 16 2014 ==================================================
+
+ Bug fix for making internal probe list
+
+
+release 1.1.0  Nov 17 2014 ==================================================
+
+ Adding function to evaluate internal probe TM against Target Variant.
+
+ - penalty weight for the TM difference
+ - minimum TM value for TM against Target Variant
+
+ Adding penalty weight to evaluate labeling position
+
+
+release 1.0.2  Oct 03 2014 ==================================================
+
+ Adding function to show final penalty scores
+ in  format_output_TE.c
+
+
+release 1.0.1  Sep 26 2014 ==================================================
+
+ Adding Error action in case of USE_SNP==0 && getting SNP position
+ in  primer3_boulder_main_TE.c  and read_boulder_TE.c
+
+
+release 1.0.0  Sep 22 2014 ==================================================
+
+ First release

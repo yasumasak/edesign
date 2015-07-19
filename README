@@ -1,0 +1,152 @@
+1. COPYRIGHT AND LICENSE
+
+ Copyright Notice and Disclaimer for Edesign
+
+ Copyright (c) 2013,2014,2015 RIKEN and K.K.DNAFORM. All Rights Reserved
+ Edesign is based on the Primer3 program (version 2.3.4) of the Whitehead
+ Institute (http://primer3.ut.ee/).
+
+       This file is part of Edesign software.
+
+       This software is a free software;
+       you can redistribute it and/or modify it under the terms
+       of the GNU General Public License as published by the Free
+       Software Foundation; either version 2 of the License, or (at
+       your option) any later version.
+
+       This software is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+       GNU General Public License for more details.
+
+       You should have received a copy of the GNU General Public License
+       along with this software (file gpl-2.0.txt in the source
+       distribution); if not, write to the Free Software
+       Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON A THEORY
+ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+2. SYSTEM REQUIREMENTS
+
+ Edesign should compile on any system using an ANSI C compiler like Linux/Unix, MacOSX.
+ The Makefile will probably need to be modified for compilation with C compilers other than gcc.
+
+
+3. INSTALLATION INSTRUCTIONS - UNIX / LINUX / Mac OSX
+
+ Unzip and untar the distribution. 
+
+ $ tar zxvf edesign-<release>.tar.gz
+ $ cd edesign-<release>/src
+ $ make
+
+ You will have executables edesign_core_TE, ntdpal_TE, olgotm_TE, 
+ long_seq_tm_test_TE and ntdpal_TE in the edesign-<release>/src directory.
+ The edesign_core_TE is the main binary file which corresponds to primer3_core 
+ in Primer3. The other files correspond to the same binaries in Primer3 without 
+ the suffix "_TE". The suffix "_TE" means that the program treats thiazole 
+ orange doublly labelled thymine nucleotide (TE).
+ To test the main program please run:
+
+ $ edesign-<release>/src/edesign_core_TE -format_output < ../example
+
+ If you need, please copy the executables to a location of your choice. You can 
+ optionally set your $PATH to the location. For the edesign_core_TE, the 
+ thermodynamic parameters config directory "primer3_config_Z" must be in the same
+ directory by default. Otherwise you need to specify the directory by 
+ "-config_path <directory path>" option or by "PRIMER_THERMODYNAMIC_PARAMETERS_PATH"
+ parameter in your input file.
+ In order to run edesign core program
+
+ $ <directory of binary>/edesign_core_TE < yourInputFile
+  ----> getting computer-friendly sequential output.
+
+ $ <directory of binary>/edesign_core_TE -format_output < yourInputFile
+  ----> getting web-interface format output.
+
+ The command line for Edesign is:
+ edesign_core_TE [-format_output] [-p3_settings_file=<file_path>] 
+                 [-echo_settings_file] [-config_path=<directory_path>] 
+                 [-output=<file_path>] [-error=<file_path>] [input_file]
+
+ If no input file is specified, edesign_core_TE will read its input from stdin.
+ The details of command line arguments are:
+  -about
+       show the release number.
+  -format_output
+       generate user-oriented (rather than program-oriented) output.
+  -p3_settings_file=<file_path>
+       specifies a settings file. Edesign reads the global parameters from this
+       file first. Tags appearing in the settings file override default Edesign
+       settings. The values set in the settings files can also be overridden by
+       tags in the input file.
+  -config_path=<directory_path>
+       specifies the config directory for calculation of hybridization thermodynamics.
+       This path overrides the path in the input file. The path should end with "/".
+  -echo_settings_file
+       print the input tags specified in the given settings file.
+       If no settings file is provided or if the -format_output option is given,
+       this argument will have no effect.
+  -output=<file_path>
+       the file where the output should be written. If omitted, stdout is used.
+  -error=<file_path>
+       the file where the error messages should be written. If omitted, stderr is used.
+
+
+4. WEB INTERFACE SET UP 
+
+ To install the web interface you may need the perl module CGI.pm (available
+ from CPAN, http://cpan.org, if it is not already available in your system).
+
+ Copy all files in the html directory to your .../html or equivalent.
+   - default Apache html directory in Linux:
+      /var/www/html/edesign/*.htm
+   - default Apache html directory in Mac OSX:
+      /Library/WebServer/Documents/edesign/*.htm
+
+ Copy all files in the cgi-bin directory to your .../cgi-bin or equivalent.
+   - default Apache cgi-bin directory in Linux:
+      /var/www/cgi-bin/edesign/*.cgi
+   - default Apache cgi-bin directory in Mac OSX:
+      /Library/WebServer/CGI-Executables/edesign/*.cgi
+
+ Copy edesign_core_TE built in the src directory to the directory containing
+ the cgi-bin files. In addition, copy the subdirectory primer3_config_Z/ to
+ the same directory.
+ As in the example above:
+   - default Apache cgi-bin directory in Linux:
+      /var/www/cgi-bin/edesign/edesign_core_TE
+      /var/www/cgi-bin/edesign/primer3_config_Z/
+   - default Apache cgi-bin directory in Mac OSX:
+      /Library/WebServer/CGI-Executables/edesign/edesign_core_TE
+      /Library/WebServer/CGI-Executables/edesign/primer3_config_Z/
+
+ (Background: running edesign_core_TE requires the directory primer3_config_Z 
+ and its contents. By default this primer3_config_Z needs to be in the current 
+ working directory when edesign_core_TE is executed.)
+
+ Depending on the structure of your web site you may have to adjust some of the
+ URLs in the .htm .html, or .cgi files.  You might have to fix the #!  headers 
+ in the .cgi files to point to your perl.
+
+
+5. CREATING CUSTOM Edesign
+
+ Please see README.custom_Edesign
+
+
+6. Contact Information
+
+ For technical support please contact: contact@dnaform.jp
+

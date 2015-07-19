@@ -1,0 +1,65 @@
+* Instructions on how to make a custom Edesign for a particular modification
+
+Edesign can provide a design of a modified oligonucleotide for quantitative PCR.
+In order to make a custom Edesign for a particular modification you need to
+update Edesign following the steps described below. Note that Edesign can only
+handle one type of modification of one specified nucleotide at a time. If you
+want to be able to select several types of modification, you need to create a
+number of different custom Edesigns. Those custom Edesigns can then be chosen
+through the web interface.
+
+1. Obtain thermodynamic parameters
+ A set of nearest neighbor thermodynamic parameters should be obtained. 
+ Usually the thermodynamic parameters are obtained through melting curve 
+ experiments as described in [1][2]. 
+
+For the following 2., 3., 4., move to src directory.
+
+2. Set the modifiable base 
+ One modifiable base can be set in the "modification_Z.h" file. 
+
+3. Update thermodynamic parameter files
+ Open the "update_thermodynamic_parameters.xls" and input the obtained
+ incremental nearest neighbor parameters ΔΔH and ΔΔS in the "input" sheet.
+ Then type the modifiable base in the "Modifiable base" cell. After inputting
+ the parameters, click on the "generate files" button, which will generate
+ the following Edesign files. 
+ (The directory name and file names can be changed on the excel file.)
+
+  ./primer3_config_Z/stack.dh
+  ./primer3_config_Z/stack.ds
+  ./primer3_config_Z/stackmm.dh
+  ./primer3_config_Z/stackmm.ds
+  ./primer3_config_Z/tstack.dh
+  ./primer3_config_Z/tstack_tm_inf.ds
+  ./primer3_config_Z/tstack2.dh
+  ./primer3_config_Z/tstack2.ds
+  ./oligotm_Z.c
+  ./dpal_Z.h
+
+4. Modify Makefile
+ Modify the binary file names in the "Makefile" for your convenience (The 
+ corresponding lines in the file are shown below). By default, the binary file
+ names have the suffix "_TE", since the original version of Edesign treats thiazole 
+ orange doubly labeled thymine nucleotide (TE) as the modified nucleotide.
+
+  PRIMER_EXE = edesign_core_TE
+  NTDPAL_EXE = ntdpal_TE
+  NTTHAL_EXE = ntthal_TE
+  OLIGOTM_EXE = oligotm_TE
+  LONG_SEQ_EXE = long_seq_tm_test_TE
+
+5. Modify web interface
+ If you need to change descriptions and explanations on the web interface, please
+ manually modify html files (index.htm, web_help.htm) in html directory. Note that 
+ changing the request parameter names affects the CGI and C programs. (Changing 
+ descriptions and values will not affects the CGI and C program codes.)
+
+References:
+[1] McTigue, P.M., Peterson, R.J. and Kahn, J.D. (2004) Sequence-dependent 
+  thermodynamic parameters for locked nucleic acid (LNA)-DNA duplex formation. 
+  Biochemistry, 43, 5388–405
+[2] Kimura, Y., Hanami, T., Tanaka, Y., de Hoon, M.J.L., Soma, T., Harbers, M., 
+  Lezhava, A., Hayashizaki, Y. and Usui, K. (2012) Effect of Thiazole Orange 
+  Doubly Labeled Thymidine on DNA Duplex Formation. Biochemistry, 51, 6056–6067.
+

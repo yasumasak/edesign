@@ -1,0 +1,1462 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Edesign</title>
+<script type="text/javascript">
+
+var blnGenotyping = 0;
+
+function openWin(u){
+	var url = "/edesign/web_help.htm#" + u;
+	var sw=parseInt(screen.availWidth); 
+	var sh=parseInt(screen.availHeight); 
+	var leftPos=sw-300-10; 
+	var topPos=sh-300-10;
+	var wid=window.open(url,'test','resizable=yes,scrollbars=yes,top='+leftPos+'px,left='+leftPos+'px,width=1150, height=400');
+	wid.focus()
+} 
+
+function expand(URI, SUB, EXP){
+	if(document.getElementById) {
+		if(document.getElementById(SUB).style.display) {
+			if(URI != 0) {
+				document.getElementById(SUB).style.display = "block";
+				document.getElementById(EXP).style.display = "none";
+			} else {
+				document.getElementById(SUB).style.display = "none";
+				document.getElementById(EXP).style.display = "block";
+			}
+		} else {
+			location.href = URI;
+			return true;
+		}
+	} else {
+		location.href = URI;
+		return true;
+	}
+}
+
+function showall() {
+	var i = 0;
+	for (i=1;i<=10;i++){
+		var objID2=document.getElementById( "subjoinder" + i );
+		var buttonID2=document.getElementById( "expander" + i );
+		objID2.style.display='block';
+		buttonID2.style.display="none";
+	}
+}
+
+function allclose() {
+	var o = 0;
+	for (o=1;o<=10;o++){
+		var objID3=document.getElementById( "subjoinder" + o );
+		var buttonID3=document.getElementById( "expander" + o );
+		objID3.style.display='none';
+		buttonID3.style.display='block';
+	}
+}
+
+function chkIntelProbe(objI) {
+	if (objI.checked) {
+		document.form.PRIMER_INTERNAL_OLIGO_DIRECTION.disabled = false;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_MODIFY_OLIGO.disabled = false;
+		document.form.SEQUENCE_INTERNAL_OLIGO.disabled = false;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_GENOTYPING.disabled = false;
+
+		if (document.form.MUST_XLATE_PRIMER_INTERNAL_GENOTYPING.checked){
+			if (document.form.MUST_XLATE_PRIMER_INTERNAL_MODIFY_OLIGO.checked){
+			}else{
+			}
+		}else{
+		}
+
+	}else{
+		document.form.PRIMER_INTERNAL_OLIGO_DIRECTION.disabled = true;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_MODIFY_OLIGO.disabled = true;
+		document.form.SEQUENCE_INTERNAL_OLIGO.disabled = true;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_GENOTYPING.disabled = true;
+	} 
+}
+
+function chkGenotyping(objS) {
+	if (objS.checked) {
+		blnGenotyping = 1;
+		alert('Please specify your target variant \nby using \"[\", \"]\" and \"/\" in the target sequence.\n\nDifferent variants should be separated by \"/\".\n\nEg．(Single) Nucleotide Polymorphism \n    [A/G] [CC/TTTT] \nEg. Insertion and Deletion\n    [GG/] [/C]');
+	}else{
+		blnGenotyping = 0;
+	}
+}
+
+function chkCheckedTH(objTH) {
+	if (objTH.checked) {
+		document.getElementById('TB_PRIMER_TH_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_OLD_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_TH_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_OLD_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_PAIR_TH_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_PAIR_OLD_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN_WT').style.display = "none";
+		document.form.MUST_XLATE_PRIMER_THERMODYNAMIC_ALIGNMENT.checked = true;
+		document.form.MUST_XLATE_PRIMER_INTL_THERMODYNAMIC_ALIGNMENT.checked = true;
+	}else{
+		document.getElementById('TB_PRIMER_TH_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_OLD_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_TH_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_OLD_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_PAIR_TH_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_PAIR_OLD_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN_WT').style.display = "";
+		document.form.MUST_XLATE_PRIMER_THERMODYNAMIC_ALIGNMENT.checked = false;
+		document.form.MUST_XLATE_PRIMER_INTL_THERMODYNAMIC_ALIGNMENT.checked = false;
+	}
+}
+
+function slctLabelPos(objLP) {
+	var val = objLP.options[objLP.selectedIndex].value;
+	if (val == "0") {
+		document.form.PRIMER_INTERNAL_MOD_VAR_DISTANCE.value = "2";
+	}else if(val == "1") {
+		document.form.PRIMER_INTERNAL_MOD_VAR_DISTANCE.value = "1";
+	}
+}
+
+</script>
+
+</head><body>
+
+<form name="form" id="edesign" action="/cgi-bin/edesign/results.cgi" method="post" enctype="multipart/form-data">
+
+<table bgcolor="#227722" border="0" width="850">
+	<tbody>
+		<tr>
+			<td rowspan="2" valign="middle">
+			<a name="top">&nbsp;<font size="+4" face="Times New Roman" color="white"><b>Edesign</b></font>&nbsp;&nbsp;<font size="+2" face="Times New Roman" color="white">Primer and enhanced internal probe design tool</font></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<p>
+Paste <a name="SEQUENCE_TEMPLATE_INPUT"> source sequence</a>
+below (5'-&gt;3', string of ACGTNacgtn --
+other letters treated as N -- numbers and blanks ignored).
+<br>
+FASTA format ok.  Please N-out undesirable sequence
+(vector, ALUs, LINEs, etc.)  or use a
+<a name="PRIMER_MISPRIMING_LIBRARY_INPUT" href="javascript:openWin('PRIMER_MISPRIMING_LIBRARY');">
+Mispriming Library (repeat library)</a>
+<tt> </tt><select name="PRIMER_MISPRIMING_LIBRARY">
+<option selected="selected">NONE</option>
+<option>HUMAN</option>
+<option>RODENT_AND_SIMPLE</option>
+<option>RODENT</option>
+<option>DROSOPHILA</option>
+</select>
+</p>
+
+<textarea name="SEQUENCE_TEMPLATE" rows="6" cols="95"></textarea>
+
+<p>
+	<input name="Design" value="Design" type="submit">
+	<input name="Download Settings" value="Download Settings" type="submit">
+	<input name="Reset Form" value="Reset Form" type="submit">
+</p>
+
+<!-- First Table -->
+
+Primer Pair
+<table style="border:1px solid #003300">
+<!-- tbody -->
+<!-- tr bgcolor="#ccccff" -->
+	<tbody><tr>
+		<td valign="top">
+<!-- Left table -->
+			<table border="0">
+			<!-- tbody -->
+			<!-- tr bgcolor="#ccccff" -->
+				<tbody><tr>
+					<td valign="top"> <input name="MUST_XLATE_PRIMER_PICK_LEFT_PRIMER" value="1" checked="checked" type="checkbox"> Pick Left (Forward) primer </td>
+				</tr>
+				<tr>
+					<td valign="top">
+						<input name="MUST_XLATE_PRIMER_MODIFY_LEFT" value="1" type="checkbox">
+						<a href="javascript:openWin('PRIMER_MODIFY_LEFT');"> Set Left primer as Eprimer </a>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"> <a href="javascript:openWin('SEQUENCE_PRIMER');"> Use my own Left primer</a> <input size="36" name="SEQUENCE_PRIMER" type="text"> </td>
+				</tr>
+
+			</tbody></table>
+
+		</td>
+
+		<td valign="top">
+<!-- Right table -->
+			<table border="0">
+			<!-- tbody -->
+			<!-- tr bgcolor="#ccccff" -->
+				<tbody><tr>
+					<td valign="top"> <input name="MUST_XLATE_PRIMER_PICK_RIGHT_PRIMER" value="1" checked="checked" type="checkbox"> Pick Right (Reverse) primer </td>
+				</tr>
+				<tr>
+					<td valign="top">
+						<input name="MUST_XLATE_PRIMER_MODIFY_RIGHT" value="1" type="checkbox">
+						<a href="javascript:openWin('PRIMER_MODIFY_RIGHT');"> Set Right primer as Eprimer </a>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"> <a href="javascript:openWin('SEQUENCE_PRIMER_REVCOMP');"> Use my own Right primer</a> <input size="36" name="SEQUENCE_PRIMER_REVCOMP" type="text"> </td>
+				</tr>
+
+			</tbody></table>
+
+		</td>
+
+	</tr>
+
+</tbody></table>
+
+<!-- Second Table -->
+<br>
+Internal Probe
+<table style="border:1px solid #003300">
+<!-- tr bgcolor="#ccccff" -->
+	<tbody><tr>
+		<td valign="top">
+			<table border="0">
+			<!-- tr bgcolor="#ccccff" -->
+			<tbody>
+				<tr>
+					<td valign="top">
+						<input name="MUST_XLATE_PRIMER_PICK_INTERNAL_OLIGO" value="1" checked="checked" onclick="chkIntelProbe(this)" type="checkbox">
+						<a href="javascript:openWin('PRIMER_PICK_INTERNAL_OLIGO');"> Pick Internal Probe </a>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="javascript:openWin('PRIMER_INTERNAL_OLIGO_DIRECTION');"> Internal Probe Direction</a>   
+						<select name="PRIMER_INTERNAL_OLIGO_DIRECTION">
+							<option value="0">Forward</option>
+							<option value="1">Reverse</option>
+							<option value="2" selected="selected">Any</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+
+					<td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="MUST_XLATE_PRIMER_INTERNAL_MODIFY_OLIGO" value="1" checked="checked" type="checkbox">
+						<a href="javascript:openWin('PRIMER_INTERNAL_MODIFY_OLIGO');"> Set Internal Probe as Eprobe </a>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="javascript:openWin('SEQUENCE_INTERNAL_OLIGO');"> Use my own Internal Probe</a>
+					   <input size="36" name="SEQUENCE_INTERNAL_OLIGO" type="text">
+					</td>
+				</tr>
+
+				<tr>
+					<td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="MUST_XLATE_PRIMER_INTERNAL_GENOTYPING" value="1" onclick="chkGenotyping(this)" type="checkbox">
+						<a href="javascript:openWin('PRIMER_INTERNAL_GENOTYPING');"> Genotyping by Internal Probe </a>
+					</td>
+				</tr>
+			</tbody></table>
+
+	</td>
+</tr>
+
+</tbody></table>
+
+<br>
+<a name="PRIMER_NUM_RETURN_INPUT" href="javascript:openWin('PRIMER_NUM_RETURN');">
+	Number To Return</a>
+<input size="4" name="PRIMER_NUM_RETURN" value="5" type="text">
+
+<br>
+<br>
+
+
+
+<a href="javascript:void(0)" onclick="showall();">Open All Conditions</a>
+&nbsp;
+<a href="javascript:void(0)" onclick="allclose();">Close All Conditions</a>
+
+<br>
+
+
+
+
+<p style="display: block;" id="expander1"><font size="5"><b>Target Sequence Conditions</b></font>
+<a href="#expander" onclick="expand('#','subjoinder1','expander1');return false;">(open)</a></p>
+
+<div id="subjoinder1" style="display: none;">
+<p id="collapser1"><font size="5"><b>Target Sequence Conditions</b></font>
+<a href="#expander" onclick="expand(0,'subjoinder1','expander1');return false;">(close)</a></p>
+
+<table border="0" width="100%">
+	<tr> 
+		<td> <a name="SEQUENCE_ID_INPUT" href="javascript:openWin('SEQUENCE_ID');"> Sequence Id </a> </td>
+		<td> <input name="SEQUENCE_ID" value="" type="text"> </td>
+		<td> A string to identify your output.  </td>
+	</tr>
+	<tr> 
+		<td> <a name="SEQUENCE_TARGET_INPUT" href="javascript:openWin('SEQUENCE_TARGET');"> Targets </a> </td>
+		<td> <input name="SEQUENCE_TARGET" value="" type="text"> </td>
+		<td>
+			E.g. 50,2 requires primers to surround the 2 bases at positions 50 and 51.
+			Or mark the <a href="#SEQUENCE_TEMPLATE_INPUT">source sequence</a>
+			with [ and ]: e.g. ...ATCT[CCCC]TCAT.. means
+			that primers must flank the central CCCC.
+		</td>
+	</tr>
+	<tr> 
+		<td> <a name="SEQUENCE_OVERLAP_JUNCTION_LIST_INPUT" href="javascript:openWin('SEQUENCE_OVERLAP_JUNCTION_LIST');"> Overlap Junction List </a> </td>
+		<td> <input name="SEQUENCE_OVERLAP_JUNCTION_LIST" value="" type="text"> </td>
+		<td>
+			E.g. 27 requires one primer to overlap the junction between
+			positions 27 and 28.
+			Or mark the <a href="#SEQUENCE_TEMPLATE_INPUT">source sequence</a>
+			with -: e.g. ...ATCTAC-TGTCAT.. means
+			that primers must overlap the junction between the C and T.
+		</td>
+	</tr>
+	<tr> 
+		<td> <a name="SEQUENCE_EXCLUDED_REGION_INPUT" href="javascript:openWin('SEQUENCE_EXCLUDED_REGION');"> Excluded Regions </a> </td>
+		<td> <input name="SEQUENCE_EXCLUDED_REGION" value="" type="text"> </td>
+		<td>
+			E.g. 401,7 68,3 forbids selection of primers in the 7 bases starting at 401 and the 3 bases at 68.
+			Or mark the <a href="#SEQUENCE_TEMPLATE_INPUT">source sequence</a>
+			with &lt; and &gt;: e.g. ...ATCT&lt;CCCC&gt;TCAT.. forbids
+			primers in the central CCCC.
+		</td>
+	</tr>
+	<tr>
+		<td> <a name="SEQUENCE_PRIMER_PAIR_OK_REGION_LIST_INPUT" href="javascript:openWin('SEQUENCE_PRIMER_PAIR_OK_REGION_LIST');"> Pair OK Region List </a> </td>
+		<td> <input name="SEQUENCE_PRIMER_PAIR_OK_REGION_LIST" value="" type="text"> </td>
+		<td> See manual for 
+		<a name="SEQUENCE_PRIMER_PAIR_OK_REGION_LIST_INPUT" href="javascript:openWin('SEQUENCE_PRIMER_PAIR_OK_REGION_LIST');"> help. </a>
+		</td>
+	</tr>
+	<tr>
+		<td> <a name="SEQUENCE_INCLUDED_REGION_INPUT" href="javascript:openWin('SEQUENCE_INCLUDED_REGION');"> Included Region </a> </td>
+		<td> <input name="SEQUENCE_INCLUDED_REGION" value="" type="text"> </td>
+		<td>
+			E.g. 20,400: only pick primers in the 400 base region starting at position 20.
+			Or use { and } in the 
+			<a href="#SEQUENCE_TEMPLATE_INPUT">source sequence</a>
+			to mark the beginning and end of the included region: e.g.
+			in ATC{TTC...TCT}AT the included region is TTC...TCT.
+		</td>
+	</tr>
+	<tr>
+		<td> <a name="internal_oligo_generic_INPUT" href="javascript:openWin('SEQUENCE_INTERNAL_EXCLUDED_REGION');"> Internal Probe Excluded Region </a> </td>
+		<td> <input name="SEQUENCE_INTERNAL_EXCLUDED_REGION" value="" type="text"> </td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<td align=right> <a name="SEQUENCE_FORCE_LEFT_START_INPUT" href="javascript:openWin('SEQUENCE_FORCE_LEFT_START');"> Force Left Primer 5' Start </a> </td>
+		<td> <input size="6" name="SEQUENCE_FORCE_LEFT_START" value="-1000000" type="text"> </td>
+		<td colspan="2"> </td>
+		<td align=right> <a name="SEQUENCE_FORCE_LEFT_END_INPUT" href="javascript:openWin('SEQUENCE_FORCE_LEFT_END');"> Force Left Primer 3' End </a> </td>
+		<td> <input size="6" name="SEQUENCE_FORCE_LEFT_END" value="-1000000" type="text"> </td>
+		<td colspan="2"></td> 
+		<td align=right> <a name="SEQUENCE_FORCE_RIGHT_END_INPUT" href="javascript:openWin('SEQUENCE_FORCE_RIGHT_END');"> Force Right Primer 3' End </a> </td>
+		<td> <input size="6" name="SEQUENCE_FORCE_RIGHT_END" value="-1000000" type="text"> </td>
+		<td colspan="2"></td> 
+		<td align=right> <a name="SEQUENCE_FORCE_RIGHT_START_INPUT" href="javascript:openWin('SEQUENCE_FORCE_RIGHT_START');"> Force Right Primer 5' Start </a> </td>
+		<td> <input size="6" name="SEQUENCE_FORCE_RIGHT_START" value="-1000000" type="text"> </td>
+	</tr>
+</table>
+
+
+<p>
+     <input name="Design" value="Design" type="submit">
+     <input name="Download Settings" value="Download Settings" type="submit">
+     <input name="Reset Form" value="Reset Form" type="submit">
+</p>
+
+<!-- DELETED target sequence conditions: codon position, sequence quality
+		<tr>
+			<td><a name="SEQUENCE_START_CODON_POSITION_INPUT" href="javascript:openWin('SEQUENCE_START_CODON_POSITION');">Start Codon Position</a> </td>
+			<td><input name="SEQUENCE_START_CODON_POSITION" value="" type="text"> </td>
+		</tr>
+
+		<p><a name="SEQUENCE_QUALITY_INPUT" href="javascript:openWin('SEQUENCE_QUALITY');">Sequence Quality </a></p>
+		<textarea rows="2" cols="95" name="SEQUENCE_QUALITY"></textarea>
+
+	<table border="0">	    
+	<tr>
+ 		<td><a name="PRIMER_MIN_QUALITY_INPUT" href="javascript:openWin('PRIMER_MIN_QUALITY');">Min Sequence Quality</a></td>
+		<td><input size="4" name="PRIMER_MIN_QUALITY" value="0" type="text"></td>
+		<td><a name="PRIMER_MIN_END_QUALITY_INPUT" href="javascript:openWin('PRIMER_MIN_END_QUALITY');">Min End Sequence Quality</a></td>
+		<td><input size="4" name="PRIMER_MIN_END_QUALITY" value="0" type="text"></td>
+		<td><a name="PRIMER_QUALITY_RANGE_MIN_INPUT" href="javascript:openWin('PRIMER_QUALITY_RANGE_MIN');">Sequence Quality Range Min</a></td>
+		<td><input size="4" name="PRIMER_QUALITY_RANGE_MIN" value="0" type="text"></td>
+		<td><a name="PRIMER_QUALITY_RANGE_MAX_INPUT" href="javascript:openWin('PRIMER_QUALITY_RANGE_MAX');">Sequence Quality Range Max</a></td>
+		<td><input size="4" name="PRIMER_QUALITY_RANGE_MAX" value="100" type="text"></td>
+	</tr>
+	</table>
+-->
+
+
+</div>
+
+
+<p>Upload the settings from a file
+	<!--input name="Upload" onchange="document.forms['primer3web'].submit();" type="file"-->
+	<input name="Upload" onchange="document.forms['edesign'].submit();" type="file">
+</p>
+
+<!-- Start Primer Picking Conditions -->
+        
+<p style="display: block;" id="expander2"><font size="5"><b>Primer Picking Conditions</b></font>
+<a href="#expander" onclick="expand('#','subjoinder2','expander2');return false;">(open)</a></p>
+
+<div id="subjoinder2" style="display: none;">
+<p id="collapser2"><font size="5"><b>Primer Picking Conditions</b></font>
+<a href="#expander" onclick="expand(0,'subjoinder2','expander2');return false;">(close)</a></p>
+
+
+
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="PRIMER_OPT_SIZE_INPUT" href="javascript:openWin('PRIMER_MIN_SIZE');"> Primer Size </a> </td>
+		<td> Min <input size="4" name="PRIMER_MIN_SIZE" value="17" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_OPT_SIZE" value="20" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_MAX_SIZE" value="30" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_OPT_TM_INPUT" href="javascript:openWin('PRIMER_MIN_TM');"> Primer Tm </a> </td>
+		<td> Min <input size="4" name="PRIMER_MIN_TM" value="57.0" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_OPT_TM" value="59.0" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_MAX_TM" value="62.0" type="text"> </td>
+		<td> 
+			<a name="PRIMER_PAIR_MAX_DIFF_TM_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_DIFF_TM');"> Max Tm Difference</a> 
+			<input size="4" name="PRIMER_PAIR_MAX_DIFF_TM" value="5.0" type="text"> 
+		</td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_PRODUCT_TM_INPUT" href="javascript:openWin('PRIMER_PRODUCT_MIN_TM');"> Product Tm </a> </td>
+		<td> Min <input size="4" name="PRIMER_PRODUCT_MIN_TM" value="-1000000.0" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_PRODUCT_OPT_TM" value="0.0" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_PRODUCT_MAX_TM" value="1000000.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_GC_PERCENT_INPUT" href="javascript:openWin('PRIMER_MIN_GC');"> Primer GC% </a> </td>
+		<td> Min <input size="4" name="PRIMER_MIN_GC" value="30.0" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_OPT_GC_PERCENT" value="50.0" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_MAX_GC" value="70.0" type="text"> </td>
+	</tr>
+</tbody></table>
+
+<p></p>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td>
+			<a name="PRIMER_PRODUCT_SIZE_RANGE_INPUT" href="javascript:openWin('PRIMER_PRODUCT_SIZE_RANGE');"> Product Size Ranges</a>
+			<input size="80" name="PRIMER_PRODUCT_SIZE_RANGE" value="100-150 151-200 201-300 301-400 401-500 501-600 601-700 701-850 851-1000" type="text">
+		</td>
+	</tr>
+
+
+</tbody></table>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td align="right"> <a name="PRIMER_MAX_END_STABILITY_INPUT" href="javascript:openWin('PRIMER_MAX_END_STABILITY');"> Primer Max 3' Stability </a> </td>
+		<td> <input size="4" name="PRIMER_MAX_END_STABILITY" value="9.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td align="right"> <a name="PRIMER_MAX_LIBRARY_MISPRIMING_INPUT" href="javascript:openWin('PRIMER_MAX_LIBRARY_MISPRIMING');"> Primer Max Library Mispriming </a> </td>
+		<td> <input size="4" name="PRIMER_MAX_LIBRARY_MISPRIMING" value="12.00" type="text"> </td>
+		<td align="right"> <a name="PRIMER_PAIR_MAX_LIBRARY_MISPRIMING_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_LIBRARY_MISPRIMING');"> Pair Max Library Mispriming </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_MAX_LIBRARY_MISPRIMING" value="20.00" type="text"> </td>
+	</tr>
+
+</tbody></table>
+
+<p></p>
+
+<table border="0">
+	<tr>
+		<td>
+			<input name="MUST_XLATE_PRIMER_THERMODYNAMIC_ALIGNMENT" value="1" type="checkbox" onclick="chkCheckedTH(this)">
+			<a name="PRIMER_THERMODYNAMIC_ALIGNMENT_INPUT" href="javascript:openWin('PRIMER_THERMODYNAMIC_ALIGNMENT');">Use Thermodynamic Alignment</a>
+		</td>
+	</tr>
+</table>
+
+<!-- Start thermodynamic approach -->
+<table border="0" id="TB_PRIMER_TH_ALIGN">
+	<tr>
+		<td colspan="2"><a name="PRIMER_MAX_TEMPLATE_MISPRIMING_TH_INPUT" href="javascript:openWin('PRIMER_MAX_TEMPLATE_MISPRIMING_TH');"> TH: Primer Max Template Mispriming</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_MAX_TEMPLATE_MISPRIMING_TH" value="40.00" type="text"></td>
+		<td colspan="2"><a name="PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH');"> TH: Pair Max Template Mispriming</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_TH" value="70.00" type="text"> </td>
+	</tr>
+
+	<tr>
+		<td colspan="2"><a name="PRIMER_MAX_SELF_ANY_TH_INPUT" href="javascript:openWin('PRIMER_MAX_SELF_ANY_TH');">TH: Primer Max Self Complementarity</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_MAX_SELF_ANY_TH" value="45.0" type="text"></td>
+		<td colspan="2"><a name="PRIMER_MAX_SELF_END_TH_INPUT" href="javascript:openWin('PRIMER_MAX_SELF_END_TH');">TH: Primer Max 3' Self Complementarity</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_MAX_SELF_END_TH" value="35.0" type="text"></td>
+		<td colspan="2"></td>
+	</tr>
+
+	<tr>
+		<td colspan="2"><a name="PRIMER_PAIR_MAX_COMPL_ANY_TH_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_COMPL_ANY_TH');">TH: Pair Max Any Complementarity</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_PAIR_MAX_COMPL_ANY_TH" value="45.0" type="text"></td>
+		<td colspan="2"><a name="PRIMER_PAIR_MAX_COMPL_END_TH_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_COMPL_END_TH');">TH: Pair Max 3' Complementarity</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_PAIR_MAX_COMPL_END_TH" value="35.0" type="text"></td>
+		<td colspan="2"></td>
+	</tr>
+
+</table>
+<!-- End thermodynamic approach -->
+
+<table border="0" id="TB_PRIMER_OLD_ALIGN">
+	<tr>
+		<td colspan="2"> <a name="PRIMER_MAX_TEMPLATE_MISPRIMING_INPUT" href="javascript:openWin('PRIMER_MAX_TEMPLATE_MISPRIMING');">OLD: Primer Max Template Mispriming </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MAX_TEMPLATE_MISPRIMING" value="12.00" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING');">OLD: Pair Max Template Mispriming </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_PAIR_MAX_TEMPLATE_MISPRIMING" value="24.00" type="text"> </td>
+		<td> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_MAX_SELF_ANY_INPUT" href="javascript:openWin('PRIMER_MAX_SELF_ANY');">OLD: Primer Max Self Complementarity </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MAX_SELF_ANY" value="8.00" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_MAX_SELF_END_INPUT" href="javascript:openWin('PRIMER_MAX_SELF_END');">OLD: Primer Max 3' Self Complementarity </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MAX_SELF_END" value="3.00" type="text"> </td>
+		<td colspan="2"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_PAIR_MAX_COMPL_ANY_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_COMPL_ANY');">OLD: Pair Max Any Complementarity </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_PAIR_MAX_COMPL_ANY" value="8.00" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_PAIR_MAX_COMPL_END_INPUT" href="javascript:openWin('PRIMER_PAIR_MAX_COMPL_END');">OLD: Pair Max 3' Complementarity </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_PAIR_MAX_COMPL_END" value="3.00" type="text"> </td>
+		<td colspan="2"> </td>
+	</tr>
+</table>
+
+<table border="0" id="TB_PRIMER_TH_HAIRPIN">
+	<tr>
+		<td colspan="2"><a name="PRIMER_MAX_HAIRPIN_TH_INPUT" href="javascript:openWin('PRIMER_MAX_HAIRPIN_TH');">TH: Primer Max Hairpin</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_MAX_HAIRPIN_TH" value="24.0" type="text"></td>
+		<td colspan="2"></td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0"> 
+<tbody>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_MAX_NS_ACCEPTED_INPUT" href="javascript:openWin('PRIMER_MAX_NS_ACCEPTED');"> Primer Max #N's accepted </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MAX_NS_ACCEPTED" value="0" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_MAX_POLY_X_INPUT" href="javascript:openWin('PRIMER_MAX_POLY_X');"> Primer Max Poly-X </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MAX_POLY_X" value="4" type="text"> </td>
+		<td colspan="2"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_INSIDE_PENALTY_INPUT" href="javascript:openWin('PRIMER_INSIDE_PENALTY');"> Inside Target Penalty </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INSIDE_PENALTY" value="-1.0" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_OUTSIDE_PENALTY_INPUT" href="javascript:openWin('PRIMER_OUTSIDE_PENALTY');"> Outside Target Penalty </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_OUTSIDE_PENALTY" value="0" type="text"> </td>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INSIDE_PENALTY');"> Note: you can set Inside Target Penalty to allow primers inside a target.  </a> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_FIRST_BASE_INDEX_INPUT" href="javascript:openWin('PRIMER_FIRST_BASE_INDEX');"> First Base Index </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_FIRST_BASE_INDEX" value="1" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_GC_CLAMP_INPUT" href="javascript:openWin('PRIMER_GC_CLAMP');"> CG Clamp </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_GC_CLAMP" value="0" type="text"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_MAX_END_GC_INPUT" href="javascript:openWin('PRIMER_MAX_END_GC');"> Max GC in Primer 3' end </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MAX_END_GC" value="5" type="text"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE_INPUT" href="javascript:openWin('PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE');"> 3' End Distance Between Left Primers </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE" value="-1" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE_INPUT" href="javascript:openWin('PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE');"> 3' End Distance Between Right Primers </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE" value="-1" type="text"> </td>
+		<td colspan="2"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION_INPUT" href="javascript:openWin('PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION');"> 5 Prime Junction Overlap </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION" value="7" type="text"> </td>
+		<td colspan="2"> <a name="PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION_INPUT" href="javascript:openWin('PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION');"> 3 Prime Junction Overlap </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION" value="4" type="text"> </td>
+		<td colspan="2"> (Distance of the primer ends to one <a href="javascript:openWin('SEQUENCE_OVERLAP_JUNCTION_LIST_INPUT');">overlap position</a>.) </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_DNA_CONC_INPUT" href="javascript:openWin('PRIMER_DNA_CONC');"> Annealing Primer Concentration </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_DNA_CONC" value="50.0" type="text"> </td>
+		<td colspan="5"> (Not the concentration of oligos in the reaction mix but of those annealing to template.) </td>
+	</tr>
+
+</tbody></table>
+
+<p></p>
+<table border="0">
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_5_PRIME_TERMINAL_EXCLUDED_MOD');">Primer 5' Terminal Region Excluded for Labelling </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_5_PRIME_TERMINAL_EXCLUDED_MOD" value="2" type="text"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_3_PRIME_TERMINAL_EXCLUDED_MOD');">Primer 3' Terminal Region Excluded for Labelling </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_3_PRIME_TERMINAL_EXCLUDED_MOD" value="1" type="text"> </td>
+	</tr>
+</table>
+
+
+<!-- DELETED sequencing primer function
+	<tr>
+		<td colspan="2"><a name="PRIMER_SEQUENCING_SPACING_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_SPACING');">Sequencing Spacing</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_SEQUENCING_SPACING" value="500" type="text"></td>
+		<td colspan="2"><a name="PRIMER_SEQUENCING_INTERVAL_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_INTERVAL');">Sequencing Interval</a></td>
+		<td colspan="1"><input size="4" name="PRIMER_SEQUENCING_INTERVAL" value="250" type="text"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"><a name="PRIMER_SEQUENCING_LEAD_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_LEAD');">Sequencing Lead</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_SEQUENCING_LEAD" value="50" type="text"> </td>
+		<td colspan="2"><a name="PRIMER_SEQUENCING_ACCURACY_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_ACCURACY');">Sequencing Accuracy</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_SEQUENCING_ACCURACY" value="20" type="text"> </td>
+	</tr>
+-->
+
+</tbody></table>
+
+
+<p>
+	<input name="Design" value="Design" type="submit">
+	<input name="Download Settings" value="Download Settings" type="submit">
+	<input name="Reset Form" value="Reset Form" type="submit">
+</p>
+</div>
+
+<!-- End Primer Picking Conditions -->
+
+
+
+<!-- Start Internal Probe Conditions -->
+
+<p style="display: block;" id="expander3"><font size="5"><b>Internal Probe Conditions</b></font>
+<a href="#expander" onclick="expand('#','subjoinder3','expander3');return false;">(open)</a></p>
+
+<div id="subjoinder3" style="display: none;"><p id="collapser3"><font size="5"><b>Internal Probe Conditions</b></font>
+<a href="#expander" onclick="expand(0,'subjoinder3','expander3');return false;">(close)</a></p>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="PRIMER_INTERNAL_OLIGO_SIZE_INPUT" href="javascript:openWin('PRIMER_INTERNAL_MIN_SIZE');"> Internal Probe Size </a> </td>
+		<td> Min <input size="4" name="PRIMER_INTERNAL_MIN_SIZE" value="10" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_INTERNAL_OPT_SIZE" value="15" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_INTERNAL_MAX_SIZE" value="26" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_INTERNAL_OLIGO_OPT_TM_INPUT" href="javascript:openWin('PRIMER_INTERNAL_MIN_TM');"> Internal Probe Tm </a> </td>
+		<td> Min <input size="4" name="PRIMER_INTERNAL_MIN_TM" value="45.0" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_INTERNAL_OPT_TM" value="57.0" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_INTERNAL_MAX_TM" value="60.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_INTERNAL_OLIGO_GC_INPUT" href="javascript:openWin('PRIMER_INTERNAL_MIN_GC');"> Internal Probe GC% </a> </td>
+		<td> Min <input size="4" name="PRIMER_INTERNAL_MIN_GC" value="20.0" type="text"> </td>
+		<td> Opt <input size="4" name="PRIMER_INTERNAL_OPT_GC_PERCENT" value="50.0" type="text"> </td>
+		<td> Max <input size="4" name="PRIMER_INTERNAL_MAX_GC" value="80.0" type="text"> </td>
+	</tr>
+</tbody></table>
+
+<p></p>
+
+<table border="0">
+
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_MIN_TM_VAR');">Internal Probe Tm Min for Target Variant </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_MIN_TM_VAR" value="35.00" type="text"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_TERMINAL_EXCLUDED_VAR');">Internal Probe Terminal Region Excluded for Target Variant </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_TERMINAL_EXCLUDED_VAR" value="2" type="text"> </td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0">
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_MOD_NEAR_VAR');"> Internal Probe Labelling Position against Target Variant</a>
+			<select name="PRIMER_INTERNAL_MOD_NEAR_VAR" onchange="slctLabelPos(this)">
+				<option value="0" selected="selected">[Far] Further than</option>
+				<option value="1">[Near]  Within</option>
+			</select>
+		</td>
+		<td colspan="1"> 
+	    	<input size="4" name="PRIMER_INTERNAL_MOD_VAR_DISTANCE" type="text" value="2">
+		</td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0">
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_MAX_LIBRARY_MISHYB');">Internal Probe Max Library Mishyb </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_MAX_LIBRARY_MISHYB" value="12.00" type="text"> </td>
+		<td colspan="2"> </td>
+		<td colspan="2"> </td>
+		<td colspan="1"> </td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0">
+	<tr><td><input name="MUST_XLATE_PRIMER_INTL_THERMODYNAMIC_ALIGNMENT" value="1" type="checkbox" onclick="chkCheckedTH(this)">
+		<a name="PRIMER_THERMODYNAMIC_ALIGNMENT_INPUT" href="javascript:openWin('PRIMER_THERMODYNAMIC_ALIGNMENT');">Use Thermodynamic Alignment</a>
+	</td></tr>
+</table>
+
+<!-- Start thermodynamic approach -->
+<table border="0" id="TB_PRIMER_INTL_TH_ALIGN">
+	<tr>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_TEMPLATE_MISHYB_TH');">TH: Internal Probe Max Template Mishyb</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_TEMPLATE_MISHYB_TH" value="30.00" type="text"> </td>
+		<td colspan="1"> </td>
+		<td colspan="2"> </td>
+		<td colspan="1"> </td>
+		<td colspan="2"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_SELF_ANY_TH');">TH: Internal Probe Max Self Complementarity</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_SELF_ANY_TH" value="24.00" type="text"> </td>
+		<td colspan="1"></td>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_SELF_END_TH');">TH: Internal Probe Max 3' Self Complementarity</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_SELF_END_TH" value="24.00" type="text"> </td>
+		<td colspan="2"></td>
+	</tr>
+</table>
+<!-- End thermodynamic approach -->
+
+<table border="0" id="TB_PRIMER_INTL_OLD_ALIGN">
+	<tr>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_TEMPLATE_MISHYB');">OLD: Internal Probe Max Template Mishyb</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_TEMPLATE_MISHYB" value="9.00" type="text"> </td>
+		<td colspan="1"> </td>
+		<td colspan="2"> </td>
+		<td colspan="1"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_MAX_SELF_ANY');">OLD: Internal Probe Max Self Complementarity </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_MAX_SELF_ANY" value="8.00" type="text"> </td>
+		<td colspan="1"></td>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_MAX_SELF_END');">OLD: Internal Probe Max 3' Self Complementarity </a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_SELF_END" value="8.00" type="text"> </td>
+	</tr>
+</table>
+
+<table border="0" id="TB_PRIMER_INTL_TH_HAIRPIN">
+	<tr>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_HAIRPIN_TH');">TH: Internal Probe Max Hairpin</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_HAIRPIN_TH" value="24.00" type="text"> </td>
+		<td colspan="1"></td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td colspan="2"> <a name="PRIMER_INTERNAL_OLIGO_NUM_NS_INPUT" href="javascript:openWin('PRIMER_INTERNAL_MAX_NS_ACCEPTED');"> Internal Probe Max #Ns accepted </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_MAX_NS_ACCEPTED" value="0" type="text"> </td>
+		<td colspan="1"></td>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_POLY_X');"> Internal Probe Max Poly-X </a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_POLY_X" value="5" type="text"> </td>
+		<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	</tr>
+
+<!-- DELETED, using the same setting of primers
+	<tr>
+		<td  colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MISHYB_LIBRARY');">Internal Probe Mishyb Library</a> </td>
+		<td colspan="2"><select name="PRIMER_INTERNAL_MISHYB_LIBRARY">
+			<option selected="selected">NONE</option>
+			<option>HUMAN</option>
+			<option>RODENT_AND_SIMPLE</option>
+			<option>RODENT</option>
+			<option>DROSOPHILA</option>
+		</select>
+		</td>
+	</tr>
+-->  
+	<tr>
+
+<!-- DELETED, using the same setting of primers
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_SALT_MONOVALENT');">Internal Probe Conc of monovalent cations</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_SALT_MONOVALENT" value="50.0" type="text"> </td>
+		<td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_SALT_DIVALENT');">Internal Probe conc of divalent cations</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_SALT_DIVALENT" value="1.5" type="text"> </td>
+		<td colspan="1"></td><td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_DNTP_CONC');">Internal Probe [dNTP]</a> </td>
+		<td colspan="1"><input size="4" name="PRIMER_INTERNAL_DNTP_CONC" value="0.0" type="text"> </td>
+		<td colspan="2"></td>
+-->  
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_DNA_CONC');"> Internal Probe Concentration </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_DNA_CONC" value="50.0" type="text"> </td>
+		<td colspan="1"></td>
+		<td colspan="5"> (Not the concentration of oligos in the reaction mix but of those hybridizing to template.) </td>
+	</tr>
+
+
+</tbody></table>
+        
+<p></p>
+
+<table border="0">
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_5_PRIME_TERMINAL_EXCLUDED_MOD');">Internal Probe 5' Terminal Region Excluded for Labelling </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_5_PRIME_TERMINAL_EXCLUDED_MOD" value="2" type="text"> </td>
+	</tr>
+	<tr>
+		<td colspan="2"> <a href="javascript:openWin('PRIMER_INTERNAL_3_PRIME_TERMINAL_EXCLUDED_MOD');">Internal Probe 3' Terminal Region Excluded for Labelling </a> </td>
+		<td colspan="1"> <input size="4" name="PRIMER_INTERNAL_3_PRIME_TERMINAL_EXCLUDED_MOD" value="2" type="text"> </td>
+	</tr>
+</table>
+
+<p>
+<input name="Design" value="Design" type="submit">
+<input name="Download Settings" value="Download Settings" type="submit">
+<input name="Reset Form" value="Reset Form" type="submit">
+</p>
+
+</div>
+
+<!-- End of Internal Probe Conditions -->
+
+
+<p style="display: block;" id="expander4"><font size="5"><b>General Conditions</b></font>
+<a href="#expander" onclick="expand('#','subjoinder4','expander4');return false;">(open)</a></p>
+
+<div id="subjoinder4" style="display: none;">
+<p id="collapser4"><font size="5"><b>General Conditions</b></font>
+<a href="#expander" onclick="expand(0,'subjoinder4','expander4');return false;">(close)</a></p>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="PRIMER_TM_FORMULA" href="javascript:openWin('PRIMER_TM_FORMULA');"> Table of thermodynamic parameters </a> </td>
+		<td> <select name="PRIMER_TM_FORMULA">
+				<!-- <option value="0">Breslauer et al. 1986</option> -->
+				<option selected="selected" value="1">SantaLucia 1998</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_SALT_CORRECTIONS" href="javascript:openWin('PRIMER_SALT_CORRECTIONS');"> Salt Correction Formula </a> </td>
+  		<td> <select name="PRIMER_SALT_CORRECTIONS">
+				<option selected="selected" value="1">SantaLucia 1998</option>
+				<!--
+				<option value="0"> Schildkraut and Lifson 1965</option>
+				<option selected="selected" value="1">SantaLucia 1998</option>
+				<option value="2">Owczarzy et. 2004</option>
+				-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_SALT_MONOVALENT_INPUT" href="javascript:openWin('PRIMER_SALT_MONOVALENT');"> Concentration of Monovalent Cations </a> </td>
+		<td> <input size="4" name="PRIMER_SALT_MONOVALENT" value="50.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_SALT_DIVALENT_INPUT" href="javascript:openWin('PRIMER_SALT_DIVALENT');"> Concentration of Divalent Cations </a> </td>
+		<td> <input size="4" name="PRIMER_SALT_DIVALENT" value="1.5" type="text"> </td>
+		<td> <a name="PRIMER_DNTP_CONC_INPUT" href="javascript:openWin('PRIMER_DNTP_CONC');"> Concentration of dNTPs </a> </td>
+		<td> <input size="4" name="PRIMER_DNTP_CONC" value="0.6" type="text"> </td>
+	</tr>
+
+</tbody></table>
+
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> 
+			<input name="MUST_XLATE_PRIMER_LIBERAL_BASE" value="1" checked="checked" type="checkbox"> 
+			<a name="PRIMER_LIBERAL_BASE_INPUT" href="javascript:openWin('PRIMER_LIBERAL_BASE');"> Liberal Base </a> 
+		</td>
+		<td> 
+			<input name="MUST_XLATE_PRINT_INPUT" value="1" type="checkbox"> 
+			<a name="SHOW_DEBUGGING_INPUT"> Show Debuging Info </a> 
+		</td>
+		<td> 
+			<input name="MUST_XLATE_PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS" value="1" type="checkbox"> 
+			<a name="PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS" href="javascript:openWin('PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS');"> Treat ambiguity codes in libraries as consensus </a> 
+		</td>
+	</tr>
+	<tr>
+		<td> 
+			<input name="MUST_XLATE_PRIMER_LOWERCASE_MASKING" value="1" type="checkbox"> 
+			<a name="PRIMER_LOWERCASE_MASKING" href="javascript:openWin('PRIMER_LOWERCASE_MASKING');"> Lowercase masking </a> 
+		</td>
+		<td> 
+			<input name="MUST_XLATE_PRIMER_PICK_ANYWAY" value="1" checked="checked" type="checkbox"> 
+			<a name="PRIMER_PICK_ANYWAY" href="javascript:openWin('PRIMER_PICK_ANYWAY');"> Pick anyway </a> 
+		</td>
+		<td> 
+			<input name="MUST_XLATE_PRIMER_EXPLAIN_FLAG" value="1" checked="checked" type="checkbox"> 
+			<a name="PRIMER_EXPLAIN_FLAG" href="javascript:openWin('PRIMER_EXPLAIN_FLAG');"> Print Statistics </a> 
+		</td>
+	</tr>
+
+</tbody></table>
+
+<p>
+     <input name="Design" value="Design" type="submit">
+     <input name="Download Settings" value="Download Settings" type="submit">
+     <input name="Reset Form" value="Reset Form" type="submit">
+</p>
+
+</div>  
+
+
+<p style="display: block;" id="expander_wt0">
+<a href="#expander" onclick="expand('#','subjoinder_wt0','expander_wt0');return false;">Open Penalty Weight Settings</a>　 
+<a href="#expander" onclick="expand(0,'subjoinder_wt0','expander_wt0');return false;">Close Penalty Weight Settings</a></p>
+<div id="subjoinder_wt0" style="display: none;">
+<p id="collapser_wt0">
+<a href="#expander" onclick="expand('#','subjoinder_wt0','expander_wt0');return false;">Open Penalty Weight Settings</a>　
+<a href="#expander" onclick="expand(0,'subjoinder_wt0','expander_wt0');return false;">Close Penalty Weight Settings</a></p>
+
+
+
+
+<table border="0">
+
+<br>
+
+<b>Objective Function Penalty Weights for Primers</b>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="WT_SIZE_INPUT" href="javascript:openWin('generic_penalty_weights');"> Primer Size </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_WT_SIZE_LT" value="0.2" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_WT_SIZE_GT" value="0.2" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="WT_TM_INPUT" href="javascript:openWin('generic_penalty_weights');"> Primer Tm </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_WT_TM_LT" value="1.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_WT_TM_GT" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="WT_GC_PERCENT_INPUT" href="javascript:openWin('generic_penalty_weights');"> Primer GC% </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_WT_GC_PERCENT_LT" value="0.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_WT_GC_PERCENT_GT" value="0.0" type="text"> </td>
+	</tr>
+</tbody></table>
+
+<p></p>
+
+<!-- Start thermodynamic approach Weights -->
+<table border="0" id="TB_PRIMER_TH_ALIGN_WT">
+	<tr>
+		<td><a name="PRIMER_WT_SELF_ANY_TH_INPUT" href="javascript:openWin('PRIMER_WT_SELF_ANY_TH');">TH: Primer Self Complementarity</a> </td>
+		<td><input size="4" name="PRIMER_WT_SELF_ANY_TH" value="0.5" type="text"> </td>
+	</tr>
+	<tr>
+		<td><a name="PRIMER_WT_SELF_END_TH_INPUT" href="javascript:openWin('PRIMER_WT_SELF_END_TH');">TH: Primer 3' Self Complementarity</a> </td>
+		<td><input size="4" name="PRIMER_WT_SELF_END_TH" value="1.0" type="text"></td>
+	</tr>
+	<tr>
+		<td><a href="javascript:openWin('PRIMER_WT_TEMPLATE_MISPRIMING_TH');">TH: Primer Template Mispriming</a> </td>
+		<td><input size="4" name="PRIMER_WT_TEMPLATE_MISPRIMING_TH" value="0.5" type="text"> </td>
+	</tr>
+</table>
+<!-- End thermodynamic approach Weights -->
+
+<table border="0" id="TB_PRIMER_OLD_ALIGN_WT">
+	<tr>
+		<td> <a name="PRIMER_WT_SELF_ANY_INPUT" href="javascript:openWin('PRIMER_WT_SELF_ANY');">OLD: Primer Self Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_WT_SELF_ANY" value="0.5" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_WT_SELF_END_INPUT" href="javascript:openWin('PRIMER_WT_SELF_END');">OLD: Primer 3' Self Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_WT_SELF_END" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a href="javascript:openWin('PRIMER_WT_TEMPLATE_MISPRIMING');">OLD: Primer Template Mispriming </a> </td>
+		<td> <input size="4" name="PRIMER_WT_TEMPLATE_MISPRIMING" value="0.5" type="text"> </td>
+	</tr>
+</table>
+
+<table border="0" id="TB_PRIMER_TH_HAIRPIN_ALIGN_WT">
+	<tr>
+		<td><a name="PRIMER_WT_HAIRPIN_TH_INPUT" href="javascript:openWin('PRIMER_WT_HAIRPIN_TH');">TH: Primer Hairpin</a> </td>
+		<td><input size="4" name="PRIMER_WT_HAIRPIN_TH" value="0.5" type="text"></td>
+	</tr>
+</table>
+
+
+<p></p>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="WT_NUM_NS_INPUT" href="javascript:openWin('PRIMER_WT_NUM_NS');"> Primer #N's </a> </td>
+		<td> <input size="4" name="PRIMER_WT_NUM_NS" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="WT_REP_SIM_INPUT" href="javascript:openWin('PRIMER_WT_LIBRARY_MISPRIMING');"> Primer Library Mispriming </a> </td>
+		<td> <input size="4" name="PRIMER_WT_LIBRARY_MISPRIMING" value="0.0" type="text"> </td>
+	</tr>
+<!--
+	<tr>
+		<td> <a name="WT_SEQ_QUAL_INPUT" href="javascript:openWin('PRIMER_WT_SEQ_QUAL');"> Sequence Quality </a> </td>
+		<td> <input size="4" name="PRIMER_WT_SEQ_QUAL" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="WT_END_QUAL_INPUT" href="javascript:openWin('PRIMER_WT_END_QUAL');"> End Sequence Quality </a> </td>
+		<td> <input size="4" name="PRIMER_WT_END_QUAL" value="0.0" type="text"> </td>
+	</tr>
+-->
+	<tr>
+		<td> <a name="WT_POS_PENALTY_INPUT" href="javascript:openWin('PRIMER_WT_POS_PENALTY');"> Primer Position Penalty </a> </td>
+		<td> <input size="4" name="PRIMER_WT_POS_PENALTY" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="WT_END_STABILITY_INPUT" href="javascript:openWin('PRIMER_WT_END_STABILITY');"> Primer 3' Stability </a> </td>
+		<td> <input size="4" name="PRIMER_WT_END_STABILITY" value="0.0" type="text"> </td>
+	</tr>
+</tbody></table>
+
+<br>
+
+
+<b>Objective Function Penalty Weights for Primer <em>Pairs</em></b>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="PAIR_WT_PRODUCT_SIZE_INPUT" href="javascript:openWin('generic_penalty_weights');"> Product Size </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_PRODUCT_SIZE_LT" value="0.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_PRODUCT_SIZE_GT" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PAIR_WT_PRODUCT_TM_INPUT" href="javascript:openWin('generic_penalty_weights');"> Product Tm </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_PRODUCT_TM_LT" value="0.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_PRODUCT_TM_GT" value="0.0" type="text"> </td>
+	</tr>
+</tbody></table>
+
+<p></p>
+
+<!-- Start thermodynamic approach Weights -->
+<table border="0" id="TB_PRIMER_PAIR_TH_ALIGN_WT">
+	<tr>
+		<td><a name="PRIMER_PAIR_WT_COMPL_ANY_TH_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_COMPL_ANY_TH');">TH: Pair Any Complementarity</a> </td>
+		<td><input size="4" name="PRIMER_PAIR_WT_COMPL_ANY_TH" value="0.5" type="text"> </td>
+	</tr>
+	<tr>
+		<td><a name="PRIMER_PAIR_WT_COMPL_END_TH_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_COMPL_END_TH');">TH: Pair 3' Complementarity</a> </td>
+		<td><input size="4" name="PRIMER_PAIR_WT_COMPL_END_TH" value="2.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td><a href="javascript:openWin('PRIMER_PAIR_WT_TEMPLATE_MISPRIMING_TH');">TH: Pair Template Mispriming</a> </td>
+		<td><input size="4" name="PRIMER_PAIR_WT_TEMPLATE_MISPRIMING_TH" value="0.0" type="text"> </td>
+	</tr>
+</table>
+<!-- End thermodynamic approach Weights -->
+
+<table border="0" id="TB_PRIMER_PAIR_OLD_ALIGN_WT">
+	<tr>
+		<td> <a name="PRIMER_PAIR_WT_COMPL_ANY_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_COMPL_ANY');">OLD: Pair Any Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_COMPL_ANY" value="0.5" type="text"></td>
+	</tr>
+	<tr>
+		<td> <a name="PRIMER_PAIR_WT_COMPL_END_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_COMPL_END');">OLD: Pair 3' Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_COMPL_END" value="2.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a href="javascript:openWin('PRIMER_PAIR_WT_TEMPLATE_MISPRIMING');">OLD: Pair Template Mispriming </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_TEMPLATE_MISPRIMING" value="0.0" type="text"> </td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="PAIR_WT_DIFF_TM_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_DIFF_TM');"> Pair Tm Difference </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_DIFF_TM" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PAIR_WT_LIBRARY_MISPRIMING_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_LIBRARY_MISPRIMING');"> Pair Library Mispriming </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_LIBRARY_MISPRIMING" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PAIR_WT_PR_PENALTY_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_PR_PENALTY');"> Primer Penalty Weight </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_PR_PENALTY" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="PAIR_WT_IO_PENALTY_INPUT" href="javascript:openWin('PRIMER_PAIR_WT_IO_PENALTY');"> Internal Probe Penalty Weight </a> </td>
+		<td> <input size="4" name="PRIMER_PAIR_WT_IO_PENALTY" value="1.0" type="text"> </td>
+	</tr>
+
+</tbody></table>
+<br>
+
+<b>Objective Function Penalty Weights for Internal Probes</b>
+
+<table border="0">
+<tbody>
+	<tr>
+		<td> <a name="IO_WT_SIZE_INPUT" href="javascript:openWin('generic_penalty_weights');"> Internal Probe Size </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SIZE_LT" value="0.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SIZE_GT" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="IO_WT_TM_INPUT" href="javascript:openWin('generic_penalty_weights');"> Internal Probe Tm </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_TM_LT" value="1.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_TM_GT" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="IO_WT_GC_PERCENT_INPUT" href="javascript:openWin('generic_penalty_weights');"> Internal Probe GC% </a> </td>
+		<td> Lt </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_GC_PERCENT_LT" value="0.0" type="text"> </td>
+		<td> Gt </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_GC_PERCENT_GT" value="0.0" type="text"> </td>
+	</tr>
+</tbody></table>
+
+<p></p>
+
+<table border="0" id="TB_PRIMER_INTL_WT">
+	<tr>
+		<td> <a name="IO_WT_TM_DIFF_VAR" href="javascript:openWin('PRIMER_INTERNAL_WT_DIFF_TM_VAR');"> Internal Probe Tm Difference by Target Variant </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_DIFF_TM_VAR" value="3.0" type="text"> </td>
+	</tr>
+</table>
+
+<p></p>
+
+<!-- Start thermodynamic approach Weights -->
+<table border="0" id="TB_PRIMER_INTL_TH_ALIGN_WT">
+	<tr>
+		<td> <a name="IO_WT_COMPL_ANY_INPUT_TH" href="javascript:openWin('PRIMER_INTERNAL_WT_SELF_ANY_TH');"> TH: Internal Probe Self Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SELF_ANY_TH" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="IO_WT_COMPL_END_INPUT_TH" href="javascript:openWin('Pair PRIMER_INTERNAL_WT_SELF_END_TH');"> TH: Internal Probe 3' Self Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SELF_END_TH" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a href="javascript:openWin('PRIMER_INTERNAL_WT_TEMPLATE_MISHYB_TH');"> TH: Internal Probe Template Mishyb </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_TEMPLATE_MISHYB_TH" value="0.5" type="text"> </td>
+	</tr>
+</table>
+<!-- End thermodynamic approach Weights -->
+
+<table border="0" id="TB_PRIMER_INTL_OLD_ALIGN_WT">
+	<tr>
+		<td> <a name="IO_WT_COMPL_ANY_INPUT" href="javascript:openWin('PRIMER_INTERNAL_WT_SELF_ANY');"> OLD: Internal Probe Self Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SELF_ANY" value="1.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="IO_WT_COMPL_END_INPUT" href="javascript:openWin('PRIMER_INTERNAL_WT_SELF_END');"> OLD: Internal Probe 3' Self Complementarity </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SELF_END" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a href="javascript:openWin('PRIMER_INTERNAL_WT_TEMPLATE_MISHYB');"> OLD: Internal Probe Template Mishyb </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_TEMPLATE_MISHYB" value="0.5" type="text"> </td>
+	</tr>
+</table>
+
+<table border="0" id="TB_PRIMER_INTL_TH_HAIRPIN_WT">
+	<tr>
+		<td> <a name="IO_WT_HAIRPIN_TH" href="javascript:openWin('PRIMER_INTERNAL_WT_HAIRPIN_TH');"> TH: Internal Probe Hairpin </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_HAIRPIN_TH" value="3.0" type="text"> </td>
+	</tr>
+</table>
+
+<p></p>
+
+<table border="0">
+<!-- tbody -->
+<tbody>
+	<tr>
+		<td> <a name="IO_WT_NUM_NS_INPUT" href="javascript:openWin('PRIMER_INTERNAL_WT_NUM_NS');"> Internal Probe #N's </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_NUM_NS" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="IO_WT_REP_SIM_INPUT" href="javascript:openWin('PRIMER_INTERNAL_WT_LIBRARY_MISHYB');"> Internal Probe Library Mishyb </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_LIBRARY_MISHYB" value="0.0" type="text"> </td>
+	</tr>
+
+<!--
+	<tr>
+		<td> <a name="IO_WT_SEQ_QUAL_INPUT" href="javascript:openWin('PRIMER_INTERNAL_WT_SEQ_QUAL');"> Internal Probe Sequence Quality </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_SEQ_QUAL" value="0.0" type="text"> </td>
+	</tr>
+	<tr>
+		<td> <a name="IO_WT_SEQ_END_QUAL" href="javascript:openWin('PRIMER_INTERNAL_WT_END_QUAL');"> Internal Probe Sequence End Quality </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_END_QUAL" value="0.0" type="text"> </td>
+	</tr>
+-->
+
+<!-- /tbody -->
+</tbody></table>
+
+<br>
+<b>Objective Function Penalty Weights for Labelling</b>
+
+<table border="0" id="TB_MOD_WT">
+	<tr>
+		<td> <a name="IO_WT_MOD_POS" href="javascript:openWin('PRIMER_INTERNAL_WT_MOD_POS');"> Labelling Terminal Side </a> </td>
+		<td> <input size="4" name="PRIMER_INTERNAL_WT_MOD_POS" value="1.5" type="text"> </td>
+	</tr>
+</table>
+
+
+<br>
+       <input name="Design" value="Design" type="submit">
+	<input name="Download Settings" value="Download Settings" type="submit">
+       <input name="Reset Form" value="Reset Form" type="submit">
+<br>
+
+</div>
+
+
+
+
+
+<!-- Fields which are removed from the interface but described here for running Edesign program -->
+
+<!-- Input fields will be recovered when id of p is set as expander8 -->
+<!-- Deleted fields -->
+
+<p id="expander"><font size="5"><b></b></font> 
+<a href="#expander" onclick="expand('#','subjoinder8','expander8');return false;"></a></p>
+
+<!-- Input fields will be recovered when id of div is set as subjoinder8 -->
+<div id="subjoinder" style="display: none;"><p id="collapser8"><font size="5"><b></b></font> 
+<a href="#expander" onclick="expand(0,'subjoinder8','expander8');return false;"></a></p>
+
+
+<table border="0">
+<tbody><tr><td><a name="SEQUENCE_START_CODON_POSITION_INPUT" href="javascript:openWin('SEQUENCE_START_CODON_POSITION');">Start Codon Position</a>
+</td><td><input name="SEQUENCE_START_CODON_POSITION" type="text">
+</td></tr>
+</tbody></table>
+
+
+<p><a name="SEQUENCE_QUALITY_INPUT" href="javascript:openWin('SEQUENCE_QUALITY');">Sequence Quality </a></p>
+<textarea rows="2" cols="95" name="SEQUENCE_QUALITY"></textarea>
+<table border="0">	    
+<tbody><tr>
+ <td><a name="PRIMER_MIN_QUALITY_INPUT" href="javascript:openWin('PRIMER_MIN_QUALITY');">Min Sequence Quality</a></td>
+ <td><input size="4" name="PRIMER_MIN_QUALITY" value="0" type="text"></td>
+ <td><a name="PRIMER_MIN_END_QUALITY_INPUT" href="javascript:openWin('PRIMER_MIN_END_QUALITY');">Min End Sequence Quality</a></td>
+ <td><input size="4" name="PRIMER_MIN_END_QUALITY" value="0" type="text"></td>
+ <td><a name="PRIMER_QUALITY_RANGE_MIN_INPUT" href="javascript:openWin('PRIMER_QUALITY_RANGE_MIN');">Sequence Quality Range Min</a></td>
+ <td><input size="4" name="PRIMER_QUALITY_RANGE_MIN" value="0" type="text"></td>
+ <td><a name="PRIMER_QUALITY_RANGE_MAX_INPUT" href="javascript:openWin('PRIMER_QUALITY_RANGE_MAX');">Sequence Quality Range Max</a></td>
+ <td><input size="4" name="PRIMER_QUALITY_RANGE_MAX" value="100" type="text"></td>
+ </tr>
+</tbody></table>
+
+<tr>
+ <td colspan="2"><a name="PRIMER_SEQUENCING_SPACING_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_SPACING');">Sequencing Spacing</a>
+ </td><td colspan="1"><input size="4" name="PRIMER_SEQUENCING_SPACING" value="500" type="text">
+ </td><td colspan="2"><a name="PRIMER_SEQUENCING_INTERVAL_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_INTERVAL');">Sequencing Interval</a>
+ </td><td colspan="1"><input size="4" name="PRIMER_SEQUENCING_INTERVAL" value="250" type="text">
+
+</td></tr><tr>
+ <td colspan="2"><a name="PRIMER_SEQUENCING_LEAD_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_LEAD');">Sequencing Lead</a>
+ </td><td colspan="1"><input size="4" name="PRIMER_SEQUENCING_LEAD" value="50" type="text">
+ </td><td colspan="2"><a name="PRIMER_SEQUENCING_ACCURACY_INPUT" href="javascript:openWin('PRIMER_SEQUENCING_ACCURACY');">Sequencing Accuracy</a>
+ </td><td colspan="1"><input size="4" name="PRIMER_SEQUENCING_ACCURACY" value="20" type="text">
+
+</td></tr>
+
+<tr>
+   <td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MIN_QUALITY');">Internal Probe Min Sequence Quality</a>
+   </td><td colspan="1"><input size="4" name="PRIMER_INTERNAL_MIN_QUALITY" value="0" type="text">
+   </td><td colspan="2"></td>
+</tr>
+
+<tr>
+  <td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MISHYB_LIBRARY');">Internal Probe Mishyb Library</a>
+  </td><td colspan="2"><select name="PRIMER_INTERNAL_MISHYB_LIBRARY">
+      <option selected="selected">NONE</option>
+      <option>HUMAN</option>
+<!--
+<option>RODENT_AND_SIMPLE</option>
+<option>RODENT</option>
+<option>DROSOPHILA</option>
+-->
+
+<!-- Conditions for Internal oligo should be the same as primers' -->
+  </select>
+  </td><td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_MAX_LIBRARY_MISHYB');">Internal Probe Max Library Mishyb</a>
+  </td><td colspan="1"><input size="4" name="PRIMER_INTERNAL_MAX_LIBRARY_MISHYB" value="12.00" type="text">
+  </td><td colspan="2"></td>
+</tr>
+  
+<tr>
+  <td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_SALT_MONOVALENT');">Internal Probe Conc of monovalent cations</a>
+  </td><td colspan="1"><input size="4" name="PRIMER_INTERNAL_SALT_MONOVALENT" value="50.0" type="text">
+  </td>
+</tr>
+
+<tr>
+  <td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_SALT_DIVALENT');">Internal Probe conc of divalent cations</a>
+  </td><td colspan="1"><input size="4" name="PRIMER_INTERNAL_SALT_DIVALENT" value="1.5" type="text">
+  </td><td colspan="1"></td><td colspan="2"><a href="javascript:openWin('PRIMER_INTERNAL_DNTP_CONC');">Internal Probe [dNTP]</a>
+  </td><td colspan="1"><input size="4" name="PRIMER_INTERNAL_DNTP_CONC" value="0.0" type="text">
+  </td><td colspan="2"></td>
+</tr>
+</tbody></table>
+
+<input name="PRIMER_TASK" value="generic" >
+</div> 
+
+<!--
+ Copyright Notice and Disclaimer for Edesign
+
+<p>
+ Copyright (c) 2013,2014 RIKEN and K.K.DNAFORM. All Rights Reserved
+ The Edesign is based on the Primer3 program (version 2.3.4) of the Whitehead Institute (http://primer3.ut.ee/).
+</p>
+<pre>
+       This file is part of Edesign software.
+
+       This software is free software;
+       you can redistribute it and/or modify it under the terms
+       of the GNU General Public License as published by the Free
+       Software Foundation; either version 2 of the License, or (at
+       your option) any later version.
+
+       This software is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+       GNU General Public License for more details.
+
+       You should have received a copy of the GNU General Public License
+       along with this software (file gpl-2.0.txt in the source
+       distribution); if not, write to the Free Software
+       Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON A THEORY
+ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+
+
+<h2>Citing Edesign</h2>
+<p>
+We request that use of this software be cited in
+publications as
+</p>
+<p>
+</p>
+
+-->
+
+<!-- This web service provided by YOUR ORGANZATION HERE -->
+
+</div></form></body>
+
+<!-- Deafault display setting -->
+<script type="text/javascript">
+
+	// Pick Internal Probe
+	if (document.form.MUST_XLATE_PRIMER_PICK_INTERNAL_OLIGO.checked == false){
+		document.form.PRIMER_INTERNAL_OLIGO_DIRECTION.disabled = true;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_MODIFY_OLIGO.disabled = true;
+		document.form.SEQUENCE_INTERNAL_OLIGO.disabled = true;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_GENOTYPING.disabled = true;
+	}else{
+		document.form.PRIMER_INTERNAL_OLIGO_DIRECTION.disabled = false;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_MODIFY_OLIGO.disabled = false;
+		document.form.SEQUENCE_INTERNAL_OLIGO.disabled = false;
+		document.form.MUST_XLATE_PRIMER_INTERNAL_GENOTYPING.disabled = false;
+	}
+
+	// Genotyping by Internal Probe
+	if (document.form.MUST_XLATE_PRIMER_INTERNAL_GENOTYPING.checked == true){
+	}else{
+	}
+
+	// Use Thermodynamic Alignment
+	if (document.form.MUST_XLATE_PRIMER_THERMODYNAMIC_ALIGNMENT.checked == true){
+		document.getElementById('TB_PRIMER_TH_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_OLD_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_TH_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_OLD_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_PAIR_TH_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_PAIR_OLD_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN_WT').style.display = "none";
+		document.form.MUST_XLATE_PRIMER_THERMODYNAMIC_ALIGNMENT.checked = true;
+		document.form.MUST_XLATE_PRIMER_INTL_THERMODYNAMIC_ALIGNMENT.checked = true;
+	}else{
+		document.getElementById('TB_PRIMER_TH_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_OLD_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN').style.display = "";
+		document.getElementById('TB_PRIMER_TH_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_OLD_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_PAIR_TH_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_PAIR_OLD_ALIGN_WT').style.display = "";
+		document.getElementById('TB_PRIMER_INTL_TH_ALIGN_WT').style.display = "none";
+		document.getElementById('TB_PRIMER_INTL_OLD_ALIGN_WT').style.display = "";
+		document.form.MUST_XLATE_PRIMER_THERMODYNAMIC_ALIGNMENT.checked = false;
+		document.form.MUST_XLATE_PRIMER_INTL_THERMODYNAMIC_ALIGNMENT.checked = false;
+	}
+</script>
+
+</html>
+
+
