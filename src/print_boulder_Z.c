@@ -1,7 +1,7 @@
 /*
  Copyright Notice and Disclaimer for Edesign
 
- Copyright (c) 2013,2014,2015 RIKEN and K.K.DNAFORM. All Rights Reserved
+ Copyright (c) 2013,2014,2015,2016 RIKEN and K.K.DNAFORM. All Rights Reserved
  The Edesign is based on the Primer3 program (version 2.3.4) of the Whitehead Institute (http://primer3.ut.ee/).
  
        This file is part of Edesign software.
@@ -299,12 +299,18 @@ print_boulder(int io_version,
              intl->length);
 
     /* Print primer Tm */
-    if (go_fwd == 1)
+    if (go_fwd == 1) {
       printf("PRIMER_LEFT%s_TM=%.3f\n", suffix, fwd->temp);
-    if (go_rev == 1)
+      printf("PRIMER_LEFT%s_TM_VAR=%.3f\n", suffix, fwd->temp_var);
+    }
+    if (go_rev == 1) {
       printf("PRIMER_RIGHT%s_TM=%.3f\n", suffix, rev->temp);
-    if (go_int == 1)
+      printf("PRIMER_RIGHT%s_TM_VAR=%.3f\n", suffix, rev->temp_var);
+    }
+    if (go_int == 1) {
       printf("PRIMER_%s%s_TM=%.3f\n", int_oligo, suffix, intl->temp);
+      printf("PRIMER_%s%s_TM_VAR=%.3f\n", int_oligo, suffix, intl->temp_var);
+    }
 
     /* Print primer GC content */
     if (go_fwd == 1)
