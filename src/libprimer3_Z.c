@@ -1,7 +1,7 @@
 /*
  Copyright Notice and Disclaimer for Edesign
 
- Copyright (c) 2013,2014,2015 RIKEN and K.K.DNAFORM. All Rights Reserved
+ Copyright (c) 2013,2014,2015,2016 RIKEN and K.K.DNAFORM. All Rights Reserved
  The Edesign is based on the Primer3 program (version 2.3.4) of the Whitehead Institute (http://primer3.ut.ee/).
  
        This file is part of Edesign software.
@@ -78,7 +78,7 @@ namespace std
 #define OPTIMIZE_OK_REGIONS 1
 
 #ifndef MAX_PRIMER_LENGTH
-#define MAX_PRIMER_LENGTH 36
+#define MAX_PRIMER_LENGTH 50
 #endif
 #if (MAX_PRIMER_LENGTH > DPAL_MAX_ALIGN)
 #error "MAX_PRIMER_LENGTH must be <= DPAL_MAX_ALIGN"
@@ -86,7 +86,7 @@ namespace std
 #if (MAX_PRIMER_LENGTH > THAL_MAX_ALIGN)
 # error "MAX_PRIMER_LENGTH must be <= THAL_MAX_ALIGN"
 #endif
-#define MAX_NN_TM_LENGTH 36 /* The maxium length for which to use the
+#define MAX_NN_TM_LENGTH 50 /* The maxium length for which to use the
                                nearest neighbor model when calculating
                                oligo Tms. */
 
@@ -1447,6 +1447,7 @@ choose_pair_or_triple(p3retval *retval,
 	}else{
 		n_intl = retval->intl.num_elem;
 	}
+	if(n_intl == 0 ) n_intl = 1;  // Modified for case of no internal probe  - 2016/6/29 Y.Kimura
 
 	/* Primer-internal probe pair parameters of selected internal probe.  - 20141025 Y.Kimura */
     pair_intl = (primer_intl_pair *) calloc (n_intl, sizeof(primer_intl_pair));
@@ -1634,7 +1635,7 @@ choose_pair_or_triple(p3retval *retval,
 						/* This line NEW */ 
 						if (!must_use) pair_expl->considered++;
 						pair_expl->product++; 
- 					}
+					}
 					if (!must_use) continue;
 				}
 				/* Check if pair was already computed */
@@ -1646,7 +1647,7 @@ choose_pair_or_triple(p3retval *retval,
 							pair_found = 1;
 
 							/* it->second is the second element (i.e. the 'value', as
-						   	opposed to the 'key'). */
+							opposed to the 'key'). */
 							pp = it->second; 
 							if (pp) { 
 							/* The pair was computed, it isn't illegal and it wasn't selected yet */
@@ -1742,15 +1743,15 @@ choose_pair_or_triple(p3retval *retval,
 									PR_ASSERT(h.pair_quality >= 0.0);
 									//(void)printf("pair left s:%d l:%d  right s:%d l:%d  pair_quality:%f\n", retval->fwd.oligo[j].start, retval->fwd.oligo[j].length, 
 									//             retval->rev.oligo[i].start, retval->rev.oligo[i].length, h.pair_quality);
- 			
+
 									/* Save the pair */
 									pp = new primer_pair;
 									if (!pp) longjmp(_jmp_buf, 1);
 									*pp = h;
 									(*hmap)[n_intl * j + i_k] = pp;
-              			
+
 									/* The current pair (h) is the new best pair if it is
-			   						better than the best pair so far. */
+									better than the best pair so far. */
 									if(compare_primer_pair(&h, &the_best_pair)<0){
 										the_best_pair=h;
 										the_best_i=i;
@@ -1784,17 +1785,14 @@ choose_pair_or_triple(p3retval *retval,
 							pp = new primer_pair;
 							if (!pp) longjmp(_jmp_buf, 1);
 							*pp = h;
-							(*hmap)[n_intl * j] = pp;
-							for(i_k = 1; i_k < n_intl; i_k++ ){
-								(*hmap)[n_intl * j + i_k] = NULL;
-							}
+							(*hmap)[j] = pp; // Fixed  - 2016/9/18 Y.Kimura
 
 							/* The current pair (h) is the new best pair if it is
 							better than the best pair so far. */
 							if(compare_primer_pair(&h,&the_best_pair)<0){
 								the_best_pair=h;
 								the_best_i=i;
-								the_best_j= 2 * j;
+								the_best_j=j; // Fixed  - 2016/9/18 Y.Kimura
 								best_hmap=hmap;
 								best_pp=pp;
 							}
@@ -1847,27 +1845,27 @@ choose_pair_or_triple(p3retval *retval,
 			/* Store the best primer for output */
 
 			if (trace_me) fprintf(stderr, "ADD pair i=%d, j=%d\n", the_best_i, the_best_j);
-				add_pair(&the_best_pair, best_pairs);
+			add_pair(&the_best_pair, best_pairs);
 
-				/* Mark the pair as already selected */
-				delete best_pp;
-				(*best_hmap)[the_best_j] = NULL;
+			/* Mark the pair as already selected */
+			delete best_pp;
+			(*best_hmap)[the_best_j] = NULL;
 
-				/* Update the overlaps flags */
-				for (i = 0; i < retval->rev.num_elem; i++) {
-					if (right_oligo_in_pair_overlaps_used_oligo(&retval->rev.oligo[i],
-					    &the_best_pair,
-					    pa->min_right_three_prime_distance)) {
-						retval->rev.oligo[i].overlaps = 1;
-					}
+			/* Update the overlaps flags */
+			for (i = 0; i < retval->rev.num_elem; i++) {
+				if (right_oligo_in_pair_overlaps_used_oligo(&retval->rev.oligo[i],
+				    &the_best_pair,
+				    pa->min_right_three_prime_distance)) {
+					retval->rev.oligo[i].overlaps = 1;
 				}
-				for (j = 0; j < retval->fwd.num_elem; j++) {
-					if (left_oligo_in_pair_overlaps_used_oligo(&retval->fwd.oligo[j],
-					    &the_best_pair,
-					    pa->min_left_three_prime_distance)) {
-						retval->fwd.oligo[j].overlaps = 1;
-					}
+			}
+			for (j = 0; j < retval->fwd.num_elem; j++) {
+				if (left_oligo_in_pair_overlaps_used_oligo(&retval->fwd.oligo[j],
+				    &the_best_pair,
+				    pa->min_left_three_prime_distance)) {
+					retval->fwd.oligo[j].overlaps = 1;
 				}
+			}
 
 			/* If we have enough then stop the while loop */
 			if (pa->num_return == best_pairs->num_pairs) {
@@ -7463,7 +7461,7 @@ p3_get_pair_array_explain_string(const pair_array_t *pair_array)
 const char *
 libprimer3_release(void) 
 {
-	return "libprimer3_Z release 2.0.0";
+	return "libprimer3_Z release 2.0.1";
 }
 
 const char *
